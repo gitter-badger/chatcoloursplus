@@ -15,13 +15,12 @@ import org.spongepowered.api.plugin.PluginContainer;
 import org.spongepowered.api.service.sql.SqlService;
 import org.spongepowered.api.text.Text;
 
+import javax.sql.DataSource;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.LinkOption;
 import java.nio.file.Path;
 import java.sql.SQLException;
-
-import javax.sql.DataSource;
 
 @Plugin(
         id = "chatcoloursplus",
@@ -90,11 +89,11 @@ public class ChatColoursPlus {
 
         switch(config.getNode("databaseType").getString().toLowerCase()) {
             case "mysql":
-                String ip = config.getNode("mysql").getNode("ip").getString();
-                int port = config.getNode("mysql").getNode("port").getInt();
-                String database = config.getNode("mysql").getNode("database").getString();
-                String username = config.getNode("mysql").getNode("username").getString();
-                String password = config.getNode("mysql").getNode("password").getString();
+                String ip = config.getNode("mysql", "ip").getString();
+                int port = config.getNode("mysql", "port").getInt();
+                String database = config.getNode("mysql", "database").getString();
+                String username = config.getNode("mysql", "username").getString();
+                String password = config.getNode("mysql", "password").getString();
                 try {
                     dataSource = sql.getDataSource("jdbc:mysql://" + ip + ":" + port + "/" + database + "?user=" + username + "&password=" + password);
                 } catch (SQLException e) {
@@ -103,7 +102,7 @@ public class ChatColoursPlus {
                 break;
             default:
             case "h2":
-                String name = config.getNode("h2").getNode("fileName").getString();
+                String name = config.getNode("h2", "fileName").getString();
                 try {
                     dataSource = sql.getDataSource("jdbc:h2:" + "./config/chatcoloursplus/" + name);
                 } catch (SQLException e) {
